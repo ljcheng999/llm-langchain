@@ -19,4 +19,6 @@ dependencies = [
     "langgraph>=1.0.9",
     "duckduckgo-search>=8.1.1",
     "ddgs>=9.10.0",
+    "langchain-mcp-adapters>=0.2.1",
+    "mcp>=1.26.0",
 ]
