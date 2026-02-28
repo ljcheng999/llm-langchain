@@ -21,4 +21,7 @@ dependencies = [
     "ddgs>=9.10.0",
     "langchain-mcp-adapters>=0.2.1",
     "mcp>=1.26.0",
+    "nest-asyncio>=1.6.0",
+    "pandas>=3.0.1",
+    "psycopg2-binary>=2.9.11",
 ]
