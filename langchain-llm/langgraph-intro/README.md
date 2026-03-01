@@ -23,7 +23,7 @@ The recommended way is to use the package manager uv as it's fast, efficient, an
 If using uv, we can create a virtual environment in the project directory and install the required packages with two commands.
 
 ```bash
-uv venv
+uv venv --python 3.13.11
 ```
 
 ```bash
@@ -52,9 +52,9 @@ uv pip install -e .
 We are using Supabase for our Postgresql database. Supabase is easy to set up and offers a generous free tier. You can optionally connect any database of your choosing by simply changing the SUPABASE_URL and DATABASE_URI in the .env file.
 
 1. Create a Supabase account at supabase.com.
-2. Create a new project called OnlyVans. I recommend using the generate password tool that Supabase provides and SAVE the password in your `.env` file. ![Crew New Project](static/create_new_project.png)
+2. Create a new project called OnlyVans. I recommend using the generate password tool that Supabase provides and SAVE the password in your `.env` file.
 
-3. At the top of the project page, click on the connect button and we're going to copy two connection strings to the `.env` file. ![Connect to DB](static/connect_to_db.png)
+3. At the top of the project page, click on the connect button and we're going to copy two connection strings to the `.env` file.
 
     - Set the `SUPABASE_URL` to the connection string for the transaction pooler.
     - Set the `DATABASE_URI` to the connection string for the session pooler.
@@ -64,12 +64,8 @@ We are using Supabase for our Postgresql database. Supabase is easy to set up an
 4. Select the new project and navigate to the Table Editor in the side menu.
 5. Click on the schema dropdown and create a new schema called `onlyvans`.
 
-![Create Schema](static/create_new_schema.png)
-
 6. Make sure the `onlyvans` schema is selected, sometimes it defaults back to public so check each time you create a new table that it's under the `onlyvans` schema.
 7. Create a new table called `creators`.
-
-![Import CSV](static/import_csv.png)
 
 8. You'll see a pop up and you can select the import data from CSV button to automatically load the data and set the schema. **You'll have to set the `id` column to be the primary key.** Repeat this for the other tables by loading all of the data in the sample_data folder.
 
@@ -80,7 +76,3 @@ Langsmith is used for logging and monitoring. This is completely optional but hi
 ### 7. Create a Render account (optional)
 
 Render is used for deploying the LangGraph server. This is completely optional but highly recommended as it makes it easy to deploy your LangGraph applications. You can create a free account at [render.com](https://render.com/).
-
-## Deployment
-
-The deployment is going to leverage the Langgraph CLI which allows us to create a Dockerfile for our Langgraph server. This has already been done for you in the root directory. This Dockerfile will be used by the Render web service to build and deploy the Langgraph server. The web service will have a CI/CD pipeline that will automatically build and deploy the Langgraph server whenever you push to the main branch. To deploy your agent, first ensure you've published your project to Github and linked your Github to Render. Then you can simply follow along this [YouTube Episode](https://youtu.be/SGt786ne_Mk) where we take the agent that we've built here and deploy the fully-featured Langgraph Server API to serve your agent from anywhere!

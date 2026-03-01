@@ -7,6 +7,12 @@ PROJECT_PATH = os.getcwd()
 # module_dir = os.path.dirname(os.path.abspath(__file__))
 # print("module_dir: ", module_dir)
 
-with open(os.path.join(PROJECT_PATH, "src", "data", "misty.md"), "r") as f:
+# langgraph_intro
+langgraph_intro_dir = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
+
+
+with open(os.path.join(langgraph_intro_dir, "src", "data", "misty.md"), "r") as f:
     misty_system_prompt = f.read()
     # print("misty_system_prompt: ", misty_system_prompt)

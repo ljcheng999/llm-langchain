@@ -17,8 +17,6 @@ from .misty_state import MistyState
 from .misty_intro import misty_system_prompt
 from .misty_tools import query_db, generate_visualization
 
-from dotenv import load_dotenv
-
 
 class Agent:
     """

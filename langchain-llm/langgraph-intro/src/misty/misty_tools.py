@@ -46,8 +46,10 @@ class ServerSession:
         return self.engine
 
 
-# load_dotenv(os.getcwd(), "conf", ".env")
-load_dotenv(os.path.join(os.getcwd(), "conf", ".env"))
+langgraph_intro_dir = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
+load_dotenv(os.path.join(langgraph_intro_dir, "conf", ".env"))
 session = ServerSession()
 
 
