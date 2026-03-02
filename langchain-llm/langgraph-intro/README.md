@@ -76,3 +76,9 @@ Langsmith is used for logging and monitoring. This is completely optional but hi
 ### 7. Create a Render account (optional)
 
 Render is used for deploying the LangGraph server. This is completely optional but highly recommended as it makes it easy to deploy your LangGraph applications. You can create a free account at [render.com](https://render.com/).
+
+### Dockerfile
+This Dockerfile is generated with langgraph cli, so this may need to revised later. Make sure langgraph.json has the correct directory configurations.
+```
+langgraph dockerfile Dockerfile
+```
