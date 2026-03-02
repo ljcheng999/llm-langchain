@@ -153,8 +153,8 @@ class Agent:
 
 # load_dotenv(os.path.join(os.getcwd(), "conf", ".env"))
 # Define and instantiate the agent
-# agent = Agent(name="Misty", system_prompt=misty_system_prompt)
-# graph = agent.build_graph()
+agent = Agent(name="Misty", system_prompt=misty_system_prompt)
+graph = agent.build_graph()
 
 
 # agent_poc_state = MistyState(
