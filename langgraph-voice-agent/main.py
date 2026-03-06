@@ -1,0 +1,126 @@
+import os, asyncio, nest_asyncio, json, logging
+from dotenv import load_dotenv
+
+# Configure logging to suppress HTTP request logs
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("openai").setLevel(logging.WARNING)
+
+from langchain_core.messages import AIMessage, AIMessageChunk, HumanMessage
+from langchain_mcp_adapters.client import MultiServerMCPClient
+from langgraph.graph import StateGraph
+from typing import AsyncGenerator
+from utils.agent_state import AgentState
+from utils.assistant_graph import Agent
+from utils.voice import record_audio_until_stop, play_audio
+
+
+def json_loader(file_path) -> any:
+    """Utility function to load JSON files"""
+    with open(file_path, "r") as f:
+        return json.load(f)
+
+
+async def stream_graph_response(
+    input: AgentState, graph: StateGraph, config: dict = {}
+) -> AsyncGenerator[str, None]:
+    """
+    Stream the response from the graph while parsing out tool calls.
+
+    Args:
+        input: The input for the graph.
+        graph: The graph to run.
+        config: The config to pass to the graph. Required for memory.
+
+    Yields:
+        A processed string from the graph's chunked response.
+    """
+    async for message_chunk, metadata in graph.astream(
+        input=input, stream_mode="messages", config=config
+    ):
+        if isinstance(message_chunk, AIMessageChunk):
+            if message_chunk.response_metadata:
+                finish_reason = message_chunk.response_metadata.get("finish_reason", "")
+                if finish_reason == "tool_calls":
+                    yield "\n\n"
+
+            if message_chunk.tool_call_chunks:
+                tool_chunk = message_chunk.tool_call_chunks[0]
+
+                tool_name = tool_chunk.get("name", "")
+                args = tool_chunk.get("args", "")
+
+                if tool_name:
+                    tool_call_str = f"\n< TOOL CALL: {tool_name} >\n\n"
+                if args:
+                    tool_call_str = args
+
+                yield tool_call_str
+            else:
+                yield message_chunk.content
+            continue
+
+
+async def main(customer_id, config):
+    """Main function to run the agent"""
+
+    mcp_config = json_loader("mcps/mcp_config.json")
+
+    # 1: Create MCP client
+    # Use MultiServerMCPClient with server URLs and auth tokens
+    # Get tools from our MCP server
+    client = MultiServerMCPClient(connections=mcp_config["mcpServers"])
+    tools = await client.get_tools()
+    agent_graph = Agent(tools=tools).build_graph()
+
+    # Initialize the input state outside the loop for the first turn
+    initial_input = AgentState(
+        messages=[
+            HumanMessage(
+                content="Briefly introduce yourself and ask how you can help the customer today."
+            )
+        ],
+        customer_id=customer_id,
+    )
+
+    transcribed_text = ""
+    while True:
+        print("\n ---- Assistant ---- \n")
+        async for response in stream_graph_response(
+            input=initial_input, graph=agent_graph, config=config
+        ):
+            print(response, end="", flush=True)
+
+        # Get the latest state
+        thread_state = agent_graph.get_state(config=config)
+
+        # Play the assistant's response
+        last_message = thread_state.values.get("messages")[-1]
+        if isinstance(last_message, AIMessage):
+            await play_audio(last_message.content)
+
+        # check exit condition
+        if transcribed_text.lower().count("exit") or transcribed_text.lower().count(
+            "quit"
+        ):
+            print("\n\nExit command received. Ending conversation.\n\n")
+            break
+
+        # Record audio, transcribe, and add the human message to the state
+        print("\n\nSpeak now, then press Enter to stop recording...")
+        transcribed_text = await record_audio_until_stop()
+        initial_input.messages.append(HumanMessage(content=transcribed_text))
+
+        print("\n ---- You ---- \n\n", transcribed_text, "\n")
+
+
+if __name__ == "__main__":
+    load_dotenv("conf/.env")
+
+    print("SUPABASE_URI: ", os.getenv("SUPABASE_URI"))
+    print("SUPABASE_CUSTOMER_ID: ", os.getenv("SUPABASE_CUSTOMER_ID"))
+
+    config = {"configurable": {"thread_id": "thread-1"}}  # For conversation history
+    customer_id = os.getenv("SUPABASE_CUSTOMER_ID")
+
+    nest_asyncio.apply()  # Apply nest_asyncio to allow nested event loops
+    asyncio.run(main(customer_id, config))

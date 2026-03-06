@@ -109,7 +109,7 @@ workflow.add_conditional_edges(
     router,
     {
         "quick": "quick",  # When router returns "quick" → go to "quick" node
-        "detailed": "detailed",  # Replace ___ with "detailed" - router returns this string!
+        "detailed": "detailed",  # When router returns "detailed" → go to "detailed" node
     },
 )
 

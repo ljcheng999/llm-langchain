@@ -9,7 +9,7 @@ load_dotenv("../../.env")  # Load environment variables from .env files
 
 # Initialize model with proxy
 model = ChatOpenAI(
-    model="openai/gpt-4.1-mini",
+    model="gpt-4.1-mini",
     temperature=0.7,
     api_key=os.environ.get("OPENAI_API_KEY"),
 )

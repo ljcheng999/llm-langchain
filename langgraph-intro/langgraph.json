@@ -1,0 +1,8 @@
+{
+    "dependencies": ["."],
+    "graphs": {
+      "misty": "./src/misty/misty_graph.py:graph"
+    },
+    "env": "./conf/.env",
+    "python_version": "3.13"
+}
