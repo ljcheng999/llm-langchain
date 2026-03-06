@@ -13,8 +13,15 @@ import pandas as pd
 
 # ----------------------------
 # SQLAlchemy Models
-# ----------------------------
-load_dotenv(".env")
+# # ----------------------------
+# PROJECT_ROOT_DIR = os.path.dirname(
+#     os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# )
+
+# load_dotenv(os.path.join(PROJECT_ROOT_DIR, "conf", ".env"))
+load_dotenv("conf/.env")
+# load_dotenv(".env")
+print("db file called!")
 
 
 class Base(DeclarativeBase):

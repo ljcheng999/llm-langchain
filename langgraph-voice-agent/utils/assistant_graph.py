@@ -9,8 +9,8 @@ from langgraph.checkpoint.memory import InMemorySaver
 from typing import List
 from dotenv import load_dotenv
 
-from utils.agent_state import AgentState
-from mcps.db import ExpenseCategory
+from agent_state import AgentState
+from mcps.local_servers.db import ExpenseCategory
 
 
 # Configure logging to suppress HTTP request logs

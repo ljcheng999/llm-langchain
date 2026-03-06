@@ -1,15 +1,17 @@
 from dotenv import load_dotenv
-import io
-import logging
+import io, logging, asyncio, os
 import numpy as np
 import sounddevice as sd
 from scipy.io.wavfile import write
 from openai import OpenAI, AsyncOpenAI
 from openai.helpers import LocalAudioPlayer
-import asyncio
 
 
-load_dotenv()
+PROJECT_ROOT_DIR = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
+load_dotenv(os.path.join(PROJECT_ROOT_DIR, "conf", ".env"))
+# load_dotenv()
 
 # Configure logging to suppress HTTP request logs
 logging.getLogger("httpx").setLevel(logging.WARNING)

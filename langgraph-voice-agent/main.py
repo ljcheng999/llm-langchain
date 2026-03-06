@@ -60,7 +60,7 @@ async def stream_graph_response(
             continue
 
 
-async def main(customer_id):
+async def main(customer_id, config):
     """Main function to run the agent"""
 
     mcp_config = json_loader("mcps/mcp_config.json")
@@ -72,7 +72,7 @@ async def main(customer_id):
     tools = await client.get_tools()
     agent_graph = Agent(tools=tools).build_graph()
 
-    # # Initialize the input state outside the loop for the first turn
+    # Initialize the input state outside the loop for the first turn
     initial_input = AgentState(
         messages=[
             HumanMessage(
@@ -114,13 +114,13 @@ async def main(customer_id):
 
 
 if __name__ == "__main__":
-    load_dotenv(".env")
+    load_dotenv("conf/.env")
 
     print("SUPABASE_URI: ", os.getenv("SUPABASE_URI"))
     print("SUPABASE_CUSTOMER_ID: ", os.getenv("SUPABASE_CUSTOMER_ID"))
 
-    config = {"configurable": {"thread_id": "thread-1"}}
+    config = {"configurable": {"thread_id": "thread-1"}}  # For conversation history
     customer_id = os.getenv("SUPABASE_CUSTOMER_ID")
 
     nest_asyncio.apply()  # Apply nest_asyncio to allow nested event loops
-    asyncio.run(main(customer_id))
+    asyncio.run(main(customer_id, config))

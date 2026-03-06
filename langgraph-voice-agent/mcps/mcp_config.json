@@ -1,9 +1,9 @@
 {
     "mcpServers": {
         "db": {
-            "command": "python",
+            "command": "python3",
             "args": [
-                "./mcps/db.py"
+                "./mcps/local_servers/db.py"
             ],
             "transport": "stdio"
         }

@@ -1,3 +1,6 @@
+# mac
+.DS_Store
+
 # Python-generated files
 __pycache__/
 *.py[oc]
@@ -8,4 +11,9 @@ wheels/
 
 # Virtual environments
 .venv
+
+# secrets
 .env
+
+# node
+node_modules
