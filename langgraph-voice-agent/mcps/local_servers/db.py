@@ -5,7 +5,7 @@ from sqlalchemy import ForeignKey, String, text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, Session
 from uuid import UUID, uuid4
 from datetime import datetime
-import os
+import os, sys
 from pydantic import BaseModel
 from enum import StrEnum
 import pandas as pd
@@ -20,6 +20,7 @@ import pandas as pd
 
 # load_dotenv(os.path.join(PROJECT_ROOT_DIR, "conf", ".env"))
 load_dotenv("conf/.env")
+# print("SUPABASE_CUSTOMER_ID in db.py", os.getenv("SUPABASE_CUSTOMER_ID"))
 # load_dotenv(".env")
 print("db file called!")
 
@@ -121,6 +122,7 @@ class Expense(BaseModel):
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+print("alchemy: ", os.getenv("SUPABASE_URI"))
 engine = create_engine(url=os.getenv("SUPABASE_URI"))
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -277,4 +279,11 @@ async def query_db(query: str, customer_id: UUID) -> str:
 
 
 if __name__ == "__main__":
-    mcp.run(transport="stdio")
+    try:
+        mcp.run(transport="stdio")
+    except KeyboardInterrupt:
+        print("Interrupted")
+        try:
+            sys.exit(130)
+        except SystemExit:
+            os._exit(130)

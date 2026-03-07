@@ -83,7 +83,7 @@ async def play_audio(message: str):
     async with openai_async.audio.speech.with_streaming_response.create(
         # https://developers.openai.com/api/docs/guides/text-to-speech/
         model="gpt-4o-mini-tts",
-        voice="alloy",
+        # voice="alloy",
         # voice="ash",
         # voice="ballad",
         # voice="coral",
@@ -92,10 +92,11 @@ async def play_audio(message: str):
         # voice="nova",
         # voice="onyx",
         # voice="sage",
-        # voice="shimmer",
+        voice="shimmer",
         # voice="verse",
-        # voice="marin",
         # voice="cedar",
+        ####
+        # voice="marin",
         input=cleaned_message,
         instructions="Speek in a cheerful, helpful tone with a brisk pace.",
         response_format="pcm",
