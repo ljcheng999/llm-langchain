@@ -17,8 +17,9 @@ import pandas as pd
 # PROJECT_ROOT_DIR = os.path.dirname(
 #     os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # )
-
+# print("PROJECT_ROOT_DIR: ", PROJECT_ROOT_DIR)
 # load_dotenv(os.path.join(PROJECT_ROOT_DIR, "conf", ".env"))
+
 load_dotenv("conf/.env")
 # print("SUPABASE_CUSTOMER_ID in db.py", os.getenv("SUPABASE_CUSTOMER_ID"))
 # load_dotenv(".env")
@@ -122,7 +123,6 @@ class Expense(BaseModel):
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-print("alchemy: ", os.getenv("SUPABASE_URI"))
 engine = create_engine(url=os.getenv("SUPABASE_URI"))
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

@@ -11,7 +11,6 @@ PROJECT_ROOT_DIR = os.path.dirname(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 )
 load_dotenv(os.path.join(PROJECT_ROOT_DIR, "conf", ".env"))
-# load_dotenv()
 
 # Configure logging to suppress HTTP request logs
 logging.getLogger("httpx").setLevel(logging.WARNING)

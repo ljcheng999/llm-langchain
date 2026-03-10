@@ -115,7 +115,6 @@ async def main(customer_id, config):
 
 if __name__ == "__main__":
     load_dotenv("conf/.env")
-
     print("SUPABASE_CUSTOMER_ID: ", os.getenv("SUPABASE_CUSTOMER_ID"))
 
     config = {"configurable": {"thread_id": "thread-1"}}  # For conversation history
