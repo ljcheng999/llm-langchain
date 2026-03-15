@@ -5,7 +5,7 @@ from sqlalchemy import ForeignKey, String, text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, Session
 from uuid import UUID, uuid4
 from datetime import datetime
-import os
+import os, sys
 from pydantic import BaseModel
 from enum import StrEnum
 import pandas as pd
@@ -17,9 +17,11 @@ import pandas as pd
 # PROJECT_ROOT_DIR = os.path.dirname(
 #     os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # )
-
+# print("PROJECT_ROOT_DIR: ", PROJECT_ROOT_DIR)
 # load_dotenv(os.path.join(PROJECT_ROOT_DIR, "conf", ".env"))
+
 load_dotenv("conf/.env")
+# print("SUPABASE_CUSTOMER_ID in db.py", os.getenv("SUPABASE_CUSTOMER_ID"))
 # load_dotenv(".env")
 print("db file called!")
 
@@ -277,4 +279,11 @@ async def query_db(query: str, customer_id: UUID) -> str:
 
 
 if __name__ == "__main__":
-    mcp.run(transport="stdio")
+    try:
+        mcp.run(transport="stdio")
+    except KeyboardInterrupt:
+        print("Interrupted")
+        try:
+            sys.exit(130)
+        except SystemExit:
+            os._exit(130)

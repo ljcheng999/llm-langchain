@@ -9,7 +9,7 @@ from langgraph.checkpoint.memory import InMemorySaver
 from typing import List
 from dotenv import load_dotenv
 
-from agent_state import AgentState
+from .agent_state import AgentState
 from mcps.local_servers.db import ExpenseCategory
 
 
@@ -21,10 +21,10 @@ logging.getLogger("openai").setLevel(logging.WARNING)
 class Agent:
     def __init__(
         self,
-        name: str = "Alana",
+        name: str = "Athena",
         model: str = "gpt-4.1-mini-2025-04-14",
         tools: List[BaseTool] = [],
-        system_prompt: str = """You are Alana, the company's expense manager. You are responsible for managing employee expenses. You have access to the employee's expenses and can help them create, delete, and query expenses.
+        system_prompt: str = """You are Athena, the company's expense manager. You are responsible for managing employee expenses. You have access to the employee's expenses and can help them create, delete, and query expenses.
 
             Your messages are read aloud to the user, so respond in a way that is easy to understand when spoken. Be brief and to the point.
 
